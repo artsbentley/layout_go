@@ -1,0 +1,39 @@
+# Nix builder
+FROM nixos/nix:latest AS builder
+
+# Copy our source and set up our working dir.
+COPY . /tmp/build
+WORKDIR /tmp/build
+
+# Build our Nix environment
+RUN nix \
+	--extra-experimental-features "nix-command flakes" \
+	--option filter-syscalls false \
+	build
+
+# Copy the Nix store closure into a directory.
+RUN mkdir /tmp/nix-store-closure
+RUN cp -R $(nix-store -qR result/) /tmp/nix-store-closure
+
+# Final image is based on scratch. Copy Nix dependencies and build result.
+FROM scratch
+# RUN apk add bash
+WORKDIR /app
+
+# Copy /nix/store
+COPY --from=builder /tmp/nix-store-closure /nix/store
+COPY --from=builder /tmp/build/result /app
+
+# setup entrypoint
+# COPY  /dsh-entrypoint /app
+
+# Attempt to create a user with a specific user ID (e.g., 1014)
+# ARG tenantuserid
+# ENV USERID $tenantuserid
+# RUN addgroup -g $USERID dsh && adduser -D -u $USERID -G dsh dsh
+# RUN chown -R $USERID:$USERID /app
+
+# USER dsh
+# ENTRYPOINT ["/bin/sh /app/entrypoint.sh"]
+CMD ["/app/bin/gomod2nix-template"]
+
