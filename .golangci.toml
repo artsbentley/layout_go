@@ -1,0 +1,16 @@
+[run]
+timeout = "1m"
+
+[output]
+format = "colored-tab"
+# format = "colored-line-number"
+# uniq-by-line = false
+sort-results = true
+print-linter-name = true
+
+[linters]
+disable-all = true
+enable = ["gofumpt", "govet", "errcheck"]
+
+[issues]
+exclude-use-default = false
