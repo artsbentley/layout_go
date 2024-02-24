@@ -59,19 +59,19 @@ test/cover:
 ## build: build the application
 .PHONY: build
 build:
-	go build -o=/bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
+	go build -o=./bin/${BINARY_NAME} 
 
 ## run: run the application
 .PHONY: run
 run: build
-	/bin/${BINARY_NAME}
+	./bin/${BINARY_NAME}
 
 		
 ## air: run the application with reloading on file changes
 .PHONY: air
 air:
 	go run github.com/cosmtrek/air@latest \
-		--build.cmd "make build" --build.bin "/tmp/bin/${BINARY_NAME}" --build.delay "100" \
+		--build.cmd "make build" --build.bin "./bin/${BINARY_NAME}" --build.delay "100" \
 		--build.exclude_dir "" \
 		--build.include_ext "go, tpl, tmpl, html, css, scss, js, ts, sql, jpeg, jpg, gif, png, bmp, svg, webp, ico" \
 		--screen.clear_on_rebuild "true" \
@@ -83,7 +83,7 @@ air:
 air/lint:
 	go run github.com/cosmtrek/air@latest \
 		--build.cmd "golangci-lint run && make build" \
-		--build.bin "/tmp/bin/${BINARY_NAME}" \
+		--build.bin "./bin/${BINARY_NAME}" \
 		--build.delay "100" \
 		--build.stop_on_error "true" \
 		--screen.clear_on_rebuild "true" 
@@ -107,3 +107,4 @@ production/deploy: confirm tidy audit no-dirty
 	upx -5 /tmp/bin/linux_amd64/${BINARY_NAME}
 	# Include additional deployment steps here...
 	
+
