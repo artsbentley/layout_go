@@ -59,12 +59,12 @@ test/cover:
 ## build: build the application
 .PHONY: build
 build:
-	go build -o=./bin/${BINARY_NAME} 
+	@go build -o=./bin/${BINARY_NAME} 
 
 ## run: run the application
 .PHONY: run
 run: build
-	./bin/${BINARY_NAME}
+	@./bin/${BINARY_NAME}
 
 		
 ## air: run the application with reloading on file changes
@@ -107,4 +107,6 @@ production/deploy: confirm tidy audit no-dirty
 	upx -5 /tmp/bin/linux_amd64/${BINARY_NAME}
 	# Include additional deployment steps here...
 	
+
+
 
