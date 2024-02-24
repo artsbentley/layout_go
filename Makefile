@@ -59,12 +59,12 @@ test/cover:
 ## build: build the application
 .PHONY: build
 build:
-	go build -o=/tmp/bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
+	go build -o=/bin/${BINARY_NAME} ${MAIN_PACKAGE_PATH}
 
 ## run: run the application
 .PHONY: run
 run: build
-	/tmp/bin/${BINARY_NAME}
+	/bin/${BINARY_NAME}
 
 		
 ## air: run the application with reloading on file changes
